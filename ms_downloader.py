@@ -1,3 +1,4 @@
+import PyPDF2
 import requests
 import os
 
@@ -47,7 +48,7 @@ class paper:
         
 
 
-class pdf_downloader:
+class pdf_manager:
     def __init__(self) -> None:
         pass
 
@@ -70,6 +71,35 @@ class pdf_downloader:
             print(f'HTTP response status code: {response.status_code}')
             return False
 
+
+    def get_text(self, paper):
+        path = paper.path
+
+        with open(path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
+            
+            # Extract text from each page
+            text = []
+            for (page_no, page) in enumerate(reader.pages[1:]):
+                page_text = page.extract_text()
+                lines = page_text.split("\n")
+
+                if lines[0].strip() == str(page_no + 2):
+                    lines.pop(0)
+
+                if "BLANK PAGE" in page_text:
+                    continue
+
+                page_text = [line for line in lines if "© UCLES 20" not in line]
+                page_text = "\n".join(page_text)
+
+
+
+                text.append(page_text)
+        text = "\n".join(text)
+            
+
+        return text
 
 
 
