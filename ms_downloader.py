@@ -1,6 +1,7 @@
 import PyPDF2
 import requests
 import os
+import re
 
 
 def gen_paper_type(is_ms):
@@ -49,10 +50,6 @@ class paper:
 
 
 class pdf_manager:
-    def __init__(self) -> None:
-        pass
-
-
     def download(self, paper):
         response = requests.get(paper.url, stream=True)
 
@@ -100,6 +97,23 @@ class pdf_manager:
             
 
         return text
+
+    def split_text(self, text):
+        question_split = r"(\[[0-9]{1,2}\])"
+        sub_part_split = r"\n\s+(?=\([a-h]\))"
+        sub_sub_part_split = r"\n\s+(?=\([ivx]+\))"
+
+        parts = re.split(question_split, text)
+        result = []
+
+        if parts[-1] == "":
+            parts.pop(-1)
+
+        for i in range(0, len(parts), 2):
+            result.append(parts[i] + parts[i+1] if i + 1 < len(parts) else parts[i])
+
+        return result
+
 
 
 
