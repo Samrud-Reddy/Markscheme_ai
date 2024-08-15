@@ -103,14 +103,19 @@ class pdf_manager:
         sub_part_split = r"\n\s+(?=\([a-h]\))"
         sub_sub_part_split = r"\n\s+(?=\([ivx]+\))"
 
+
+        #Splits the papers based on marks
         parts = re.split(question_split, text)
         result = []
 
         if parts[-1] == "":
             parts.pop(-1)
 
+        #adds marks back after removing it
         for i in range(0, len(parts), 2):
             result.append(parts[i] + parts[i+1] if i + 1 < len(parts) else parts[i])
+
+
 
         return result
 
