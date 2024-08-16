@@ -46,7 +46,17 @@ class paper:
 
     def __str__(self) -> str:
         return self.url
-        
+
+    def gen_metadata(self):
+        return {"subject_code": self.code,
+                "year": self.year,
+                "season": self.season,
+                "paper_no": self.paper_no,
+                "is_ms": self.is_ms,
+                "url" : self.url,
+                "path": self.path
+                }
+
 
 
 class pdf_manager:
@@ -93,15 +103,17 @@ class pdf_manager:
 
 
                 text.append(page_text)
+
+        pages = text
         text = "\n".join(text)
             
 
-        return text
+        return pages
 
     def split_text(self, text):
         question_split = r"(\[[0-9]{1,2}\])"
-        sub_part_split = r"\n\s+(?=\([a-h]\))"
-        sub_sub_part_split = r"\n\s+(?=\([ivx]+\))"
+        # sub_part_split = r"\n\s+(?=\([a-h]\))"
+        # sub_sub_part_split = r"\n\s+(?=\([ivx]+\))"
 
 
         #Splits the papers based on marks
@@ -118,6 +130,7 @@ class pdf_manager:
 
 
         return result
+
 
 
 
