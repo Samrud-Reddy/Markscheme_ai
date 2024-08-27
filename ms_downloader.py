@@ -21,9 +21,11 @@ class paper:
 
         self.url = self.create_url()
         self.path = self.path_gen()
+        self.id = None
 
     def create_url(self):
-        table = {"9618": "computer-science-(9618)"}
+        table = {"9618": "computer-science-(9618)",
+                 "9708":"economics-(9708)"}
         base_url = "https://papers.gceguide.cc/a-levels"
         
         code = str(self.code)
@@ -47,6 +49,11 @@ class paper:
     def __str__(self) -> str:
         return self.url
 
+
+    def exists(self):
+        return os.path.exists(self.path)
+
+
     def gen_metadata(self):
         return {"subject_code": self.code,
                 "year": self.year,
@@ -57,6 +64,12 @@ class paper:
                 "path": self.path
                 }
 
+    def gen_id(self):
+        if self.id:
+            self.id += 1
+        else:
+            self.id = 0
+        return self.url+"_"+str(self.id)
 
 
 class pdf_manager:
